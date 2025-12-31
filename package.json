@@ -1,0 +1,27 @@
+{
+	"name": "insider-chat-gpt-integration-demo",
+	"version": "1.0.0",
+	"description": "ChatGPT MCP Server with Insider Integration",
+	"module": "src/server.ts",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"start": "tsx src/server.ts",
+		"dev": "tsx watch src/server.ts"
+	},
+	"keywords": [
+		"mcp",
+		"chatgpt",
+		"insider"
+	],
+	"devDependencies": {
+		"@types/express": "^5.0.3",
+		"@types/node": "^24.9.1",
+		"typescript": "^5",
+		"tsx": "^4.20.6"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.20.1",
+		"express": "^5.1.0"
+	}
+}

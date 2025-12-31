@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trend Products Widget</title>
+
+    <!-- Mapping the page type to the Insider One Web SDK -->
+    <script type="text/javascript">
+      window.InsiderQueue = [];
+      window.InsiderQueue.push({ type: "user", value: { name: "John Doe" } });
+      window.InsiderQueue.push({ type: "category" });
+      window.InsiderQueue.push({ type: "init" });
+    </script>
+
+    <!-- Load the Insider Tag -->
+    <script async="true" src="https://partnerName.api.useinsider.com/ins.js?id=YOUR_ID"></script>
+
+    <!-- Example of how to track events -->
+    <script type="text/javascript">
+      /*
+				window.InsiderQueue.push({
+					type: 'custom_events',
+					value: [{
+						event_type: 'any_custom_event',
+						event_parameters: {
+							any_custom_event_parameter: 'any_custom_event_parameter_value',
+						},
+					}],
+				});
+		  */
+    </script>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        font-family: Roboto, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #insider-root {
+        width: 100%;
+        max-width: 1200px;
+        height: 600px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="insider-root"></div>
+    <!-- Insider Tag will add content here -->
+  </body>
+</html>

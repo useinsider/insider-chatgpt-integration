@@ -1,0 +1,8 @@
+
+[*.{ts,js,css}]
+indent_style = tab
+indent_size = 4
+
+[*.{json, html}]
+indent_style = space
+indent_size = 2
