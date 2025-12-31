@@ -133,6 +133,42 @@ insider-chatgpt-integration/
 6. **InsiderQueue**: Each widget initializes the Insider One Web SDK with user data and page type tracking
 7. **tsx Runtime**: Uses tsx for running TypeScript directly without compilation
 
+## Content Security Policy (CSP) Configuration
+
+For the Insider One Web SDK to work properly within ChatGPT widgets, specific domains must be included in the Content Security Policy configuration. The server automatically configures these domains in the `resourceMeta` object in `src/server.ts`:
+
+```typescript
+'openai/widgetCSP': {
+    connect_domains: [
+        'https://*.useinsider.com',
+        'https://fonts.gstatic.com',
+    ],
+    resource_domains: [
+        'https://*.useinsider.com',
+        'https://fonts.gstatic.com',
+    ],
+    script_domains: [
+        'https://*.useinsider.com',
+    ],
+    frame_domains: [
+        'https://*.useinsider.com',
+    ],
+}
+```
+
+### Required CSP Domains:
+
+- **`https://*.useinsider.com`** - Required for:
+  - Loading the Insider One Web SDK script (`ins.js`)
+  - API connections to Insider services
+  - Loading HTML, CSS, JS or image assets
+  - Iframe content for Insider One Worker
+
+- **`https://fonts.gstatic.com`** - Required for:
+  - Loading Fonts used in Insider One
+
+These domains are essential for the proper functioning of the widgets. Without these CSP entries, the Insider One Web SDK will fail to load and the widgets will not display Insider One content.
+
 ## Customization
 
 ### Adding New Tools
@@ -198,7 +234,6 @@ Create `widgets/your-widget.html` with the Insider SDK integration:
 
     <script type="text/javascript">
       window.InsiderQueue = [];
-      window.InsiderQueue.push({ type: "user", value: { name: "John Doe" } });
       window.InsiderQueue.push({ type: "home" }); // or "category", "cart", etc.
       window.InsiderQueue.push({ type: "init" });
     </script>
@@ -244,10 +279,9 @@ Edit the HTML files in the `widgets/` folder:
 - `widgets/notifications.html` - Notifications widget (Cart page type)
 
 All widgets must include:
-1. **InsiderQueue initialization** with user data and page type:
+1. **InsiderQueue initialization** with page type:
 ```javascript
 window.InsiderQueue = [];
-window.InsiderQueue.push({ type: "user", value: { name: "John Doe" } });
 window.InsiderQueue.push({ type: "home" }); // or "category", "cart"
 window.InsiderQueue.push({ type: "init" });
 ```
@@ -274,6 +308,3 @@ The project includes three widgets, each mapped to a specific Insider page type:
 - [Model Context Protocol](https://modelcontextprotocol.io/)
 - [Insider One Web SDK Documentation](https://academy.useinsider.com/docs/insider-web-sdk-integration-guide)
 
-## License
-
-MIT
