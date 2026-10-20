@@ -17,8 +17,6 @@ function getWidgetHTML(widgetName: string): string {
     return readFileSync(widgetPath, 'utf-8');
 }
 
-const server = new McpServer({ name: 'Your MCP Server', version: '1.0.0' });
-
 // Common resource metadata
 const resourceMeta = {
     'openai/widgetAccessible': true,
@@ -43,114 +41,121 @@ const resourceMeta = {
     },
 };
 
-// Deals & Discounts (deals.html)
-server.registerResource('all-deals', 'ui://widget/deals.html', {}, async () => ({
-    contents: [{
-        uri: 'ui://widget/deals.html',
-        mimeType: 'text/html+skybridge',
-        text: getWidgetHTML('deals'),
-        _meta: {
-            ...resourceMeta,
-            'openai/widgetDescription': 'Shows current deals, discounts, and coupons'
-        },
-    }],
-}));
+function createServer(): McpServer {
+    const server = new McpServer({ name: 'Your MCP Server', version: '1.0.0' });
 
-server.registerTool(
-    'get-deals-and-discounts',
-    {
-        title: 'Get Deals and Discounts',
-        description: 'Shows current deals, discounts, and available coupons. ' +
-            'Use this when users ask about discounts, coupons, or special offers.',
-        _meta: {
-            'openai/outputTemplate': 'ui://widget/deals.html',
-            'openai/toolInvocation/invoking': 'Loading current deals and discounts...',
-            'openai/toolInvocation/invoked': 'Here are the best deals available right now!',
-        },
-    },
-    async () => ({
-        content: [{
-            type: 'text',
-            text: 'Here are the current deals and discounts available!'
+    // Deals & Discounts (deals.html)
+    server.registerResource('all-deals', 'ui://widget/deals.html', {}, async () => ({
+        contents: [{
+            uri: 'ui://widget/deals.html',
+            mimeType: 'text/html+skybridge',
+            text: getWidgetHTML('deals'),
+            _meta: {
+                ...resourceMeta,
+                'openai/widgetDescription': 'Shows current deals, discounts, and coupons'
+            },
         }],
-        structuredContent: {},
-    })
-);
+    }));
 
-// Product Recommendations (trend-products.html)
-server.registerResource('product-recommendations', 'ui://widget/trend-products.html', {}, async () => ({
-    contents: [{
-        uri: 'ui://widget/trend-products.html',
-        mimeType: 'text/html+skybridge',
-        text: getWidgetHTML('trend-products'),
-        _meta: {
-            ...resourceMeta,
-            'openai/widgetDescription': 'Shows personalized product recommendations'
+    server.registerTool(
+        'get-deals-and-discounts',
+        {
+            title: 'Get Deals and Discounts',
+            description: 'Shows current deals, discounts, and available coupons. ' +
+                'Use this when users ask about discounts, coupons, or special offers.',
+            _meta: {
+                'openai/outputTemplate': 'ui://widget/deals.html',
+                'openai/toolInvocation/invoking': 'Loading current deals and discounts...',
+                'openai/toolInvocation/invoked': 'Here are the best deals available right now!',
+            },
         },
-    }],
-}));
+        async () => ({
+            content: [{
+                type: 'text',
+                text: 'Here are the current deals and discounts available!'
+            }],
+            structuredContent: {},
+        })
+    );
 
-server.registerTool(
-    'get-product-recommendations',
-    {
-        title: 'Get Product Recommendations',
-        description: 'Shows personalized product recommendations based on user preferences. ' +
-            'Use this when users ask for recommendations, help finding products, or are unsure what to buy.',
-        _meta: {
-            'openai/outputTemplate': 'ui://widget/trend-products.html',
-            'openai/toolInvocation/invoking': 'Finding the best products for you...',
-            'openai/toolInvocation/invoked': 'Here are personalized recommendations just for you!',
-        },
-    },
-    async () => ({
-        content: [{
-            type: 'text',
-            text: 'Here are personalized product recommendations based on your preferences!'
+    // Product Recommendations (trend-products.html)
+    server.registerResource('product-recommendations', 'ui://widget/trend-products.html', {}, async () => ({
+        contents: [{
+            uri: 'ui://widget/trend-products.html',
+            mimeType: 'text/html+skybridge',
+            text: getWidgetHTML('trend-products'),
+            _meta: {
+                ...resourceMeta,
+                'openai/widgetDescription': 'Shows personalized product recommendations'
+            },
         }],
-        structuredContent: {},
-    })
-);
+    }));
 
-// Notifications & Updates (notifications.html)
-server.registerResource('product-notifications', 'ui://widget/notifications.html', {}, async () => ({
-    contents: [{
-        uri: 'ui://widget/notifications.html',
-        mimeType: 'text/html+skybridge',
-        text: getWidgetHTML('notifications'),
-        _meta: {
-            ...resourceMeta,
-            'openai/widgetDescription': 'Shows notification preferences for new products and updates'
+    server.registerTool(
+        'get-product-recommendations',
+        {
+            title: 'Get Product Recommendations',
+            description: 'Shows personalized product recommendations based on user preferences. ' +
+                'Use this when users ask for recommendations, help finding products, or are unsure what to buy.',
+            _meta: {
+                'openai/outputTemplate': 'ui://widget/trend-products.html',
+                'openai/toolInvocation/invoking': 'Finding the best products for you...',
+                'openai/toolInvocation/invoked': 'Here are personalized recommendations just for you!',
+            },
         },
-    }],
-}));
+        async () => ({
+            content: [{
+                type: 'text',
+                text: 'Here are personalized product recommendations based on your preferences!'
+            }],
+            structuredContent: {},
+        })
+    );
 
-server.registerTool(
-    'setup-product-notifications',
-    {
-        title: 'Setup Product Notifications',
-        description: 'Shows a form to get lead data to inform user about updates, and special offers. ' +
-            'Use this when users want to be notified about new products or discounts.',
-        _meta: {
-            'openai/outputTemplate': 'ui://widget/notifications.html',
-            'openai/toolInvocation/invoking': 'Setting up your notifications...',
-            'openai/toolInvocation/invoked': 'Here is a form to get your lead data!',
-        },
-    },
-    async () => ({
-        content: [{
-            type: 'text',
-            text: 'We\'ll notify you about new products and special offers.'
+    // Notifications & Updates (notifications.html)
+    server.registerResource('product-notifications', 'ui://widget/notifications.html', {}, async () => ({
+        contents: [{
+            uri: 'ui://widget/notifications.html',
+            mimeType: 'text/html+skybridge',
+            text: getWidgetHTML('notifications'),
+            _meta: {
+                ...resourceMeta,
+                'openai/widgetDescription': 'Shows notification preferences for new products and updates'
+            },
         }],
-        structuredContent: {},
-    })
-);
+    }));
+
+    server.registerTool(
+        'setup-product-notifications',
+        {
+            title: 'Setup Product Notifications',
+            description: 'Shows a form to get lead data to inform user about updates, and special offers. ' +
+                'Use this when users want to be notified about new products or discounts.',
+            _meta: {
+                'openai/outputTemplate': 'ui://widget/notifications.html',
+                'openai/toolInvocation/invoking': 'Setting up your notifications...',
+                'openai/toolInvocation/invoked': 'Here is a form to get your lead data!',
+            },
+        },
+        async () => ({
+            content: [{
+                type: 'text',
+                text: 'We\'ll notify you about new products and special offers.'
+            }],
+            structuredContent: {},
+        })
+    );
+
+    return server;
+}
 
 // Express server setup
 const app = express();
 app.use(express.json());
 
 app.post('/mcp', async (req: Request, res: Response) => {
-    // Create a new transport for each request to prevent request ID collisions
+    // Create a new server and transport for each request: a server connects to one transport only
+    const server = createServer();
     const transport = new StreamableHTTPServerTransport({
         sessionIdGenerator: undefined,
         enableJsonResponse: true
@@ -158,6 +163,7 @@ app.post('/mcp', async (req: Request, res: Response) => {
 
     res.on('close', () => {
         transport.close();
+        server.close();
     });
 
     await server.connect(transport);
